@@ -1,1 +1,0 @@
-/home/alcor/cnn/data/train_z.h5
