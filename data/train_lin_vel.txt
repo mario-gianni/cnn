@@ -1,0 +1,1 @@
+/home/alcor/cnn/data/train_lin_vel.h5
