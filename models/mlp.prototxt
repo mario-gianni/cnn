@@ -1,125 +1,54 @@
 name: "RegressionNet"
 layer {
-  name: "data"
+  name: "input_x"
   type: "HDF5Data"
-  top: "fulldata"
-  top: "fake_label"
-  include {
-    phase: TRAIN
-  }
+  top: "fulldata_x"
+  top: "fake_label_x"
   hdf5_data_param {
-    source: "/home/alcor/caffe/examples/my_third_cnn_example/data/train.txt"
-    batch_size: 1000
+    source: "/Users/Mario/github/cnn/data/train_x.txt"
+    batch_size: 10
+  }
+}
+layer {
+  name: "slice_label_x"
+  type: "Slice"
+  bottom: "fulldata_x"
+  top: "data_x"
+  top: "label_x"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "fulldata_x"
+  top: "fc1"
+  param {
+    lr_mult: 0.1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
 
 layer {
-  name: "data"
-  type: "HDF5Data"
-  top: "fulldata"
-  top: "fake_label"
-  include {
-    phase: TEST
-  }
-  hdf5_data_param {
-    source: "/home/alcor/caffe/examples/my_third_cnn_example/data/test.txt"
-    batch_size: 1000
-  }
-}
-layer {
-  name: "slice_labels"
-  type: "Slice"
-  bottom: "fulldata"
-  top: "data"
-  top: "label"
-  slice_param {
-    slice_dim: 1
-    slice_point: 5
-  }
-}
-layer {
-  name: "ip0"
-  type: "InnerProduct"
-  bottom: "data"
-  top: "ip0"
-  inner_product_param {
-    num_output: 150
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "act0"
-  type: "ReLU"
-  bottom: "ip0"
-  top: "ip0"
-}
-layer {
-  name: "drop0"
-  type: "Dropout"
-  bottom: "ip0"
-  top: "ip0"
-  dropout_param {
-    dropout_ratio: 0.5
-  }
-}
-layer {
-  name: "ip1"
-  type: "InnerProduct"
-  bottom: "ip0"
-  top: "ip1"
-  inner_product_param {
-    num_output: 150
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "act1"
-  type: "ReLU"
-  bottom: "ip1"
-  top: "ip1"
-}
-layer {
-  name: "drop1"
-  type: "Dropout"
-  bottom: "ip1"
-  top: "ip1"
-  dropout_param {
-    dropout_ratio: 0.5
-  }
-}
-layer {
-  name: "ip2"
-  type: "InnerProduct"
-  bottom: "ip1"
-  top: "ip2"
-  inner_product_param {
-    num_output: 3
-    weight_filler {
-      type: "gaussian"
-      std: 0.1
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
   name: "loss"
   type: "EuclideanLoss"
-  bottom: "ip2"
-  bottom: "label"
+  bottom: "fc1"
+  bottom: "label_x"
   top: "loss"
-  include {
-    phase: TEST
-  }
 }
