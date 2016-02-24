@@ -1,0 +1,151 @@
+name: "RegressionNet"
+layer {
+  name: "input_x"
+  type: "HDF5Data"
+  top: "fulldata_x"
+  top: "fake_label_x"
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_x.txt"
+    batch_size: 10
+  }
+}
+layer {
+  name: "slice_label_x"
+  type: "Slice"
+  bottom: "fulldata_x"
+  top: "data_x"
+  top: "label_x"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "input_y"
+  type: "HDF5Data"
+  top: "fulldata_y"
+  top: "fake_label_y"
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_y.txt"
+    batch_size: 10
+  }
+}
+layer {
+  name: "slice_label_y"
+  type: "Slice"
+  bottom: "fulldata_y"
+  top: "data_y"
+  top: "label_y"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "fc1"
+  type: "InnerProduct"
+  bottom: "data_x"
+  top: "fc1"
+  param {
+    lr_mult: 0.1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "fc2"
+  type: "InnerProduct"
+  bottom: "data_y"
+  top: "fc2"
+  param {
+    lr_mult: 0.1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "concat_input"
+  bottom: "fc1"
+  bottom: "fc2"
+  top: "out"
+  type: "Concat"
+  concat_param {
+    axis: 1
+  }
+}
+
+layer {
+  name: "fc3"
+  type: "InnerProduct"
+  bottom: "out"
+  top: "fc3"
+  param {
+    lr_mult: 0.1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "concat_labels"
+  bottom: "label_x"
+  bottom: "label_y"
+  top: "labels"
+  type: "Concat"
+  concat_param {
+    axis: 1
+  }
+}
+
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "fc3"
+  bottom: "labels"
+  top: "loss"
+}
