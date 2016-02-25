@@ -4,9 +4,25 @@ layer {
   type: "HDF5Data"
   top: "fulldata_x"
   top: "fake_label_x"
+  include {
+    phase: TRAIN
+  }
   hdf5_data_param {
     source: "/Users/Mario/github/cnn/data/train_x.txt"
-    batch_size: 10
+    batch_size: 5
+  }
+}
+layer {
+  name: "input_x"
+  type: "HDF5Data"
+  top: "fulldata_x"
+  top: "fake_label_x"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_x.txt"
+    batch_size: 5
   }
 }
 layer {
@@ -26,9 +42,25 @@ layer {
   type: "HDF5Data"
   top: "fulldata_y"
   top: "fake_label_y"
+  include {
+    phase: TRAIN
+  }
   hdf5_data_param {
     source: "/Users/Mario/github/cnn/data/train_y.txt"
-    batch_size: 10
+    batch_size: 5
+  }
+}
+layer {
+  name: "input_y"
+  type: "HDF5Data"
+  top: "fulldata_y"
+  top: "fake_label_y"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_y.txt"
+    batch_size: 5
   }
 }
 layer {
@@ -48,9 +80,25 @@ layer {
   type: "HDF5Data"
   top: "fulldata_z"
   top: "fake_label_z"
+  include {
+    phase: TRAIN
+  }
   hdf5_data_param {
     source: "/Users/Mario/github/cnn/data/train_z.txt"
-    batch_size: 10
+    batch_size: 5
+  }
+}
+layer {
+  name: "input_z"
+  type: "HDF5Data"
+  top: "fulldata_z"
+  top: "fake_label_z"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_z.txt"
+    batch_size: 5
   }
 }
 
@@ -71,12 +119,27 @@ layer {
   type: "HDF5Data"
   top: "fulldata_lin_vel"
   top: "fake_label_lin_vel"
+  include {
+    phase: TRAIN
+  }
   hdf5_data_param {
     source: "/Users/Mario/github/cnn/data/train_lin_vel.txt"
-    batch_size: 10
+    batch_size: 5
   }
 }
-
+layer {
+  name: "input_lin_vel"
+  type: "HDF5Data"
+  top: "fulldata_lin_vel"
+  top: "fake_label_lin_vel"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_lin_vel.txt"
+    batch_size: 5
+  }
+}
 layer {
   name: "slice_label_lin_vel"
   type: "Slice"
@@ -94,12 +157,27 @@ layer {
   type: "HDF5Data"
   top: "fulldata_ang_vel"
   top: "fake_label_ang_vel"
+  include {
+    phase: TRAIN
+  }
   hdf5_data_param {
     source: "/Users/Mario/github/cnn/data/train_ang_vel.txt"
-    batch_size: 10
+    batch_size: 5
   }
 }
-
+layer {
+  name: "input_ang_vel"
+  type: "HDF5Data"
+  top: "fulldata_ang_vel"
+  top: "fake_label_ang_vel"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_ang_vel.txt"
+    batch_size: 5
+  }
+}
 layer {
   name: "slice_label_ang_vel"
   type: "Slice"
@@ -300,4 +378,7 @@ layer {
   bottom: "fc_final"
   bottom: "labels"
   top: "loss"
+  include {
+    phase: TEST
+  }
 }

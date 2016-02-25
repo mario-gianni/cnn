@@ -1,4 +1,7 @@
 train_net: "/Users/Mario/github/cnn/models/mlp3_lin_vel_ang_vel.prototxt"
+test_net: "/Users/Mario/github/cnn/models/deploy_lin_vel_ang_vel.prototxt"
+test_iter: 250
+test_interval: 1000
 base_lr: 0.001
 lr_policy: "step"
 gamma: 0.1
@@ -7,4 +10,6 @@ display: 1000
 max_iter: 10000
 momentum: 0.9
 weight_decay: 0.0005
+snapshot: 10000
+snapshot_prefix: "/Users/Mario/github/cnn/data/train"
 solver_mode: GPU
