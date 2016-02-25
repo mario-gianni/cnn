@@ -23,7 +23,7 @@ layer {
 layer {
   name: "fc1"
   type: "InnerProduct"
-  bottom: "fulldata_x"
+  bottom: "data_x"
   top: "fc1"
   param {
     lr_mult: 0.1

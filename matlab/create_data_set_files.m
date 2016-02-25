@@ -4,7 +4,9 @@ close all
 % train
 load('train_data_sim.mat')
 
-pwd = '/home/alcor/cnn/data/';
+%pwd = '/home/alcor/cnn/data/';
+pwd = '/Users/Mario/github/cnn/data/';
+
 % finestra temporale di campioni
 window_size = 4;
 
@@ -38,7 +40,8 @@ close all
 % train
 load('train_data_sim.mat')
 
-pwd = '/home/alcor/cnn/data/';
+%pwd = '/home/alcor/cnn/data/';
+pwd = '/Users/Mario/github/cnn/data/';
 % finestra temporale di campioni
 window_size = 4;
 % componente considerata
@@ -71,7 +74,8 @@ close all
 % train
 load('train_data_sim.mat')
 
-pwd = '/home/alcor/cnn/data/';
+%pwd = '/home/alcor/cnn/data/';
+pwd = '/Users/Mario/github/cnn/data/';
 % finestra temporale di campioni
 window_size = 4;
 % componente considerata
@@ -102,14 +106,21 @@ clear all
 close all
 % train
 load('train_data_sim.mat')
-pwd = '/home/alcor/cnn/data/';
+%pwd = '/home/alcor/cnn/data/';
+pwd = '/Users/Mario/github/cnn/data/';
+window_size = 4;
 % componente considerata
 k = 4; % linear vel
-lin_vel = x(1:(end-1),k);
-[n_samples_lin_vel,m_features_lin_vel] = size(lin_vel);
-fake_labels_lin_vel = ones(1,n_samples_lin_vel);
+
+[componente_lin_vel,labels_lin_vel] = build_time_segments(x,window_size,k);
+fulldata_componente_lin_vel = [componente_lin_vel,labels_lin_vel];
+
+%lin_vel = x(1:(end-1),k);
+[n_samples_lin_vel,m_features_lin_vel] = size(fulldata_componente_lin_vel);
 fulldata_lin_vel = zeros(1,1,m_features_lin_vel,n_samples_lin_vel);
-fulldata_lin_vel(1,1,:,:) = lin_vel';
+fulldata_lin_vel(1,1,:,:) = fulldata_componente_lin_vel';
+fake_labels_lin_vel = ones(1,n_samples_lin_vel);
+
 filename_lin_vel = 'train_lin_vel.h5';
 h5create(filename_lin_vel,'/fulldata_lin_vel',[1 1 m_features_lin_vel n_samples_lin_vel],'Datatype', 'double');
 h5create(filename_lin_vel,'/fake_label_lin_vel',[1 n_samples_lin_vel],'Datatype', 'single');
@@ -128,14 +139,22 @@ clear all
 close all
 % train
 load('train_data_sim.mat')
-pwd = '/home/alcor/cnn/data/';
+pwd = '/Users/Mario/github/cnn/data/';
+%pwd = '/home/alcor/cnn/data/';
+window_size = 4;
 % componente considerata
-k = 5; % linear vel
-ang_vel = x(1:(end-1),k);
-[n_samples_ang_vel,m_features_ang_vel] = size(ang_vel);
-fake_labels_ang_vel = ones(1,n_samples_ang_vel);
+k = 5; % angular vel
+[componente_ang_vel,labels_ang_vel] = build_time_segments(x,window_size,k);
+fulldata_componente_ang_vel = [componente_ang_vel,labels_ang_vel];
+
+%ang_vel = x(1:(end-1),k);
+
+[n_samples_ang_vel,m_features_ang_vel] = size(fulldata_componente_ang_vel);
 fulldata_ang_vel = zeros(1,1,m_features_ang_vel,n_samples_ang_vel);
-fulldata_ang_vel(1,1,:,:) = ang_vel';
+fulldata_ang_vel(1,1,:,:) = fulldata_componente_ang_vel';
+
+fake_labels_ang_vel = ones(1,n_samples_ang_vel);
+
 filename_ang_vel = 'train_ang_vel.h5';
 h5create(filename_ang_vel,'/fulldata_ang_vel',[1 1 m_features_ang_vel n_samples_ang_vel],'Datatype', 'double');
 h5create(filename_ang_vel,'/fake_label_ang_vel',[1 n_samples_ang_vel],'Datatype', 'single');
