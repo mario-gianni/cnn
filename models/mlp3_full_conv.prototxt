@@ -1,0 +1,554 @@
+name: "RegressionNet"
+layer {
+  name: "input_x"
+  type: "HDF5Data"
+  top: "fulldata_x"
+  top: "fake_label_x"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_x.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "input_x"
+  type: "HDF5Data"
+  top: "fulldata_x"
+  top: "fake_label_x"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_x.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "slice_label_x"
+  type: "Slice"
+  bottom: "fulldata_x"
+  top: "data_x"
+  top: "label_x"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "input_y"
+  type: "HDF5Data"
+  top: "fulldata_y"
+  top: "fake_label_y"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_y.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "input_y"
+  type: "HDF5Data"
+  top: "fulldata_y"
+  top: "fake_label_y"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_y.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "slice_label_y"
+  type: "Slice"
+  bottom: "fulldata_y"
+  top: "data_y"
+  top: "label_y"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "input_z"
+  type: "HDF5Data"
+  top: "fulldata_z"
+  top: "fake_label_z"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_z.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "input_z"
+  type: "HDF5Data"
+  top: "fulldata_z"
+  top: "fake_label_z"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_z.txt"
+    batch_size: 1
+  }
+}
+
+layer {
+  name: "slice_label_z"
+  type: "Slice"
+  bottom: "fulldata_z"
+  top: "data_z"
+  top: "label_z"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "input_lin_vel"
+  type: "HDF5Data"
+  top: "fulldata_lin_vel"
+  top: "fake_label_lin_vel"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_lin_vel.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "input_lin_vel"
+  type: "HDF5Data"
+  top: "fulldata_lin_vel"
+  top: "fake_label_lin_vel"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_lin_vel.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "slice_label_lin_vel"
+  type: "Slice"
+  bottom: "fulldata_lin_vel"
+  top: "data_lin_vel"
+  top: "label_lin_vel"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "input_ang_vel"
+  type: "HDF5Data"
+  top: "fulldata_ang_vel"
+  top: "fake_label_ang_vel"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/train_ang_vel.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "input_ang_vel"
+  type: "HDF5Data"
+  top: "fulldata_ang_vel"
+  top: "fake_label_ang_vel"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/Users/Mario/github/cnn/data/test_ang_vel.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "slice_label_ang_vel"
+  type: "Slice"
+  bottom: "fulldata_lin_vel"
+  top: "data_ang_vel"
+  top: "label_ang_vel"
+  slice_param {
+    slice_dim: 1
+    slice_point: 4
+  }
+}
+
+layer {
+  name: "conv1_x"
+  type: "Convolution"
+  bottom: "data_x"
+  top: "conv1_x"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 5
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_x"
+  type: "ReLU"
+  bottom: "conv1_x"
+  top: "conv1_x"
+}
+layer {
+  name: "norm1_x"
+  type: "LRN"
+  bottom: "conv1_x"
+  top: "norm1_x"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
+layer {
+  name: "pool1_x"
+  type: "Pooling"
+  bottom: "norm1_x"
+  top: "pool1_x"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+
+
+
+
+layer {
+  name: "conv1_y"
+  type: "Convolution"
+  bottom: "data_y"
+  top: "conv1_y"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 5
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_y"
+  type: "ReLU"
+  bottom: "conv1_y"
+  top: "conv1_y"
+}
+layer {
+  name: "norm1_y"
+  type: "LRN"
+  bottom: "conv1_y"
+  top: "norm1_y"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
+layer {
+  name: "pool1_y"
+  type: "Pooling"
+  bottom: "norm1_y"
+  top: "pool1_y"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+
+
+
+layer {
+  name: "conv1_z"
+  type: "Convolution"
+  bottom: "data_z"
+  top: "conv1_z"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 5
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_z"
+  type: "ReLU"
+  bottom: "conv1_z"
+  top: "conv1_z"
+}
+layer {
+  name: "norm1_z"
+  type: "LRN"
+  bottom: "conv1_z"
+  top: "norm1_z"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
+layer {
+  name: "pool1_z"
+  type: "Pooling"
+  bottom: "norm1_z"
+  top: "pool1_z"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+
+layer {
+  name: "conv1_lin_vel"
+  type: "Convolution"
+  bottom: "data_lin_vel"
+  top: "conv1_lin_vel"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 5
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_lin_vel"
+  type: "ReLU"
+  bottom: "conv1_lin_vel"
+  top: "conv1_lin_vel"
+}
+layer {
+  name: "norm1_lin_vel"
+  type: "LRN"
+  bottom: "conv1_lin_vel"
+  top: "norm1_lin_vel"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
+layer {
+  name: "pool1_lin_vel"
+  type: "Pooling"
+  bottom: "norm1_lin_vel"
+  top: "pool1_lin_vel"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+
+
+layer {
+  name: "conv1_ang_vel"
+  type: "Convolution"
+  bottom: "data_ang_vel"
+  top: "conv1_ang_vel"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 5
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_ang_vel"
+  type: "ReLU"
+  bottom: "conv1_ang_vel"
+  top: "conv1_ang_vel"
+}
+layer {
+  name: "norm1_ang_vel"
+  type: "LRN"
+  bottom: "conv1_ang_vel"
+  top: "norm1_ang_vel"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
+layer {
+  name: "pool1_ang_vel"
+  type: "Pooling"
+  bottom: "norm1_ang_vel"
+  top: "pool1_ang_vel"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+
+
+
+
+
+
+layer {
+  name: "concat_input"
+  bottom: "pool1_x"
+  bottom: "pool1_y"
+  bottom: "pool1_z"
+  bottom: "pool1_lin_vel"
+  bottom: "pool1_ang_vel"
+  top: "out"
+  type: "Concat"
+  concat_param {
+    axis: 1
+  }
+}
+
+layer {
+  name: "fc_final"
+  type: "InnerProduct"
+  bottom: "out"
+  top: "fc_final"
+  param {
+    lr_mult: 0.1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "concat_labels"
+  bottom: "label_x"
+  bottom: "label_y"
+  bottom: "label_z"
+  top: "labels"
+  type: "Concat"
+  concat_param {
+    axis: 1
+  }
+}
+
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "fc_final"
+  bottom: "labels"
+  top: "loss"
+  include {
+    phase: TEST
+  }
+}

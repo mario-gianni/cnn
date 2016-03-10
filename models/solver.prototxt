@@ -1,5 +1,5 @@
-train_net: "/Users/Mario/github/cnn/models/mlp3_lin_vel_ang_vel.prototxt"
-test_net: "/Users/Mario/github/cnn/models/deploy_lin_vel_ang_vel.prototxt"
+train_net: "/Users/Mario/github/cnn/models/mlp3_full_conv.prototxt"
+test_net: "/Users/Mario/github/cnn/models/deploy_full_conv.prototxt"
 test_iter: 250
 test_interval: 1000
 base_lr: 0.001
@@ -12,4 +12,4 @@ momentum: 0.9
 weight_decay: 0.0005
 snapshot: 10000
 snapshot_prefix: "/Users/Mario/github/cnn/data/train"
-solver_mode: GPU
+solver_mode: CPU
