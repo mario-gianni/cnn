@@ -21,13 +21,13 @@ else
             a = x(1:i,k);
             b = window_size - i;
             c = padarray(a',[0 b],'pre');
-            l = x(i+1,1);
+            l = x(i+1,k);
             data(i,:) = c;
             labels(i) = l;
         else
             b = i - window_size;
             a = x((b+1):i,k);
-            l = x(i+1,1);
+            l = x(i+1,k);
             data(i,:) = a';
             labels(i) = l;
         end
