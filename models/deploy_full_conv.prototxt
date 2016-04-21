@@ -5,7 +5,7 @@ layer {
   top: "fulldata_x"
   top: "fake_label_x"
   hdf5_data_param {
-    source: "/Users/Mario/github/cnn/data/test_x.txt"
+    source: "/home/mario/github/cnn/data/test_x.txt"
     batch_size: 1
   }
 }
@@ -26,7 +26,7 @@ layer {
   top: "fulldata_y"
   top: "fake_label_y"
   hdf5_data_param {
-    source: "/Users/Mario/github/cnn/data/test_y.txt"
+    source: "/home/mario/github/cnn/data/test_y.txt"
     batch_size: 1
   }
 }
@@ -48,7 +48,7 @@ layer {
   top: "fulldata_z"
   top: "fake_label_z"
   hdf5_data_param {
-    source: "/Users/Mario/github/cnn/data/test_z.txt"
+    source: "/home/mario/github/cnn/data/test_z.txt"
     batch_size: 1
   }
 }
@@ -71,7 +71,7 @@ layer {
   top: "fulldata_lin_vel"
   top: "fake_label_lin_vel"
   hdf5_data_param {
-    source: "/Users/Mario/github/cnn/data/test_lin_vel.txt"
+    source: "/home/mario/github/cnn/data/test_lin_vel.txt"
     batch_size: 1
   }
 }
@@ -93,14 +93,14 @@ layer {
   top: "fulldata_ang_vel"
   top: "fake_label_ang_vel"
   hdf5_data_param {
-    source: "/Users/Mario/github/cnn/data/test_ang_vel.txt"
+    source: "/home/mario/github/cnn/data/test_ang_vel.txt"
     batch_size: 1
   }
 }
 layer {
   name: "slice_label_ang_vel"
   type: "Slice"
-  bottom: "fulldata_lin_vel"
+  bottom: "fulldata_ang_vel"
   top: "data_ang_vel"
   top: "label_ang_vel"
   slice_param {
@@ -162,7 +162,7 @@ layer {
   top: "pool1_x"
   pooling_param {
     pool: MAX
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
   }
 }
@@ -223,7 +223,7 @@ layer {
   top: "pool1_y"
   pooling_param {
     pool: MAX
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
   }
 }
@@ -283,7 +283,7 @@ layer {
   top: "pool1_z"
   pooling_param {
     pool: MAX
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
   }
 }
@@ -341,7 +341,7 @@ layer {
   top: "pool1_lin_vel"
   pooling_param {
     pool: MAX
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
   }
 }
@@ -400,7 +400,7 @@ layer {
   top: "pool1_ang_vel"
   pooling_param {
     pool: MAX
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
   }
 }
